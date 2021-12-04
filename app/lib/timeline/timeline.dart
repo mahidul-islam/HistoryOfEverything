@@ -435,153 +435,153 @@ class Timeline {
 
           /// Instantiate the correct object based on the file extension.
           switch (extension) {
-            case "flr":
-              TimelineFlare flareAsset = TimelineFlare();
-              asset = flareAsset;
-              flare.FlutterActor actor = _flareResources[filename];
-              if (actor == null) {
-                actor = flare.FlutterActor();
+            // case "flr":
+            //   TimelineFlare flareAsset = TimelineFlare();
+            //   asset = flareAsset;
+            //   flare.FlutterActor actor = _flareResources[filename];
+            //   if (actor == null) {
+            //     actor = flare.FlutterActor();
 
-                /// Flare library function to load the [FlutterActor]
-                bool success = await actor.loadFromBundle(rootBundle, filename);
-                if (success) {
-                  /// Populate the Map.
-                  _flareResources[filename] = actor;
-                }
-              }
-              if (actor != null) {
-                /// Distinguish between the actual actor, and its intance.
-                flareAsset.actorStatic = actor.artboard;
-                flareAsset.actorStatic.initializeGraphics();
-                flareAsset.actor = actor.artboard.makeInstance();
-                flareAsset.actor.initializeGraphics();
+            //     /// Flare library function to load the [FlutterActor]
+            //     bool success = await actor.loadFromBundle(rootBundle, filename);
+            //     if (success) {
+            //       /// Populate the Map.
+            //       _flareResources[filename] = actor;
+            //     }
+            //   }
+            //   if (actor != null) {
+            //     /// Distinguish between the actual actor, and its intance.
+            //     flareAsset.actorStatic = actor.artboard;
+            //     flareAsset.actorStatic.initializeGraphics();
+            //     flareAsset.actor = actor.artboard.makeInstance();
+            //     flareAsset.actor.initializeGraphics();
 
-                /// and the reference to their first animation is grabbed.
-                flareAsset.animation = actor.artboard.animations[0];
+            //     /// and the reference to their first animation is grabbed.
+            //     flareAsset.animation = actor.artboard.animations[0];
 
-                dynamic name = assetMap["idle"];
-                if (name is String) {
-                  if ((flareAsset.idle = flareAsset.actor.getAnimation(name)) !=
-                      null) {
-                    flareAsset.animation = flareAsset.idle;
-                  }
-                } else if (name is List) {
-                  for (String animationName in name) {
-                    flare.ActorAnimation animation =
-                        flareAsset.actor.getAnimation(animationName);
-                    if (animation != null) {
-                      if (flareAsset.idleAnimations == null) {
-                        flareAsset.idleAnimations =
-                            List<flare.ActorAnimation>();
-                      }
-                      flareAsset.idleAnimations.add(animation);
-                      flareAsset.animation = animation;
-                    }
-                  }
-                }
+            //     dynamic name = assetMap["idle"];
+            //     if (name is String) {
+            //       if ((flareAsset.idle = flareAsset.actor.getAnimation(name)) !=
+            //           null) {
+            //         flareAsset.animation = flareAsset.idle;
+            //       }
+            //     } else if (name is List) {
+            //       for (String animationName in name) {
+            //         flare.ActorAnimation animation =
+            //             flareAsset.actor.getAnimation(animationName);
+            //         if (animation != null) {
+            //           if (flareAsset.idleAnimations == null) {
+            //             flareAsset.idleAnimations =
+            //                 List<flare.ActorAnimation>();
+            //           }
+            //           flareAsset.idleAnimations.add(animation);
+            //           flareAsset.animation = animation;
+            //         }
+            //       }
+            //     }
 
-                name = assetMap["intro"];
-                if (name is String) {
-                  if ((flareAsset.intro =
-                          flareAsset.actor.getAnimation(name)) !=
-                      null) {
-                    flareAsset.animation = flareAsset.intro;
-                  }
-                }
+            //     name = assetMap["intro"];
+            //     if (name is String) {
+            //       if ((flareAsset.intro =
+            //               flareAsset.actor.getAnimation(name)) !=
+            //           null) {
+            //         flareAsset.animation = flareAsset.intro;
+            //       }
+            //     }
 
-                /// Make sure that all the initial values are set for the actor and for the actor instance.
-                flareAsset.animationTime = 0.0;
-                flareAsset.actor.advance(0.0);
-                flareAsset.setupAABB = flareAsset.actor.computeAABB();
-                flareAsset.animation
-                    .apply(flareAsset.animationTime, flareAsset.actor, 1.0);
-                flareAsset.animation.apply(
-                    flareAsset.animation.duration, flareAsset.actorStatic, 1.0);
-                flareAsset.actor.advance(0.0);
-                flareAsset.actorStatic.advance(0.0);
+            //     /// Make sure that all the initial values are set for the actor and for the actor instance.
+            //     flareAsset.animationTime = 0.0;
+            //     flareAsset.actor.advance(0.0);
+            //     flareAsset.setupAABB = flareAsset.actor.computeAABB();
+            //     flareAsset.animation
+            //         .apply(flareAsset.animationTime, flareAsset.actor, 1.0);
+            //     flareAsset.animation.apply(
+            //         flareAsset.animation.duration, flareAsset.actorStatic, 1.0);
+            //     flareAsset.actor.advance(0.0);
+            //     flareAsset.actorStatic.advance(0.0);
 
-                dynamic loop = assetMap["loop"];
-                flareAsset.loop = loop is bool ? loop : true;
-                dynamic offset = assetMap["offset"];
-                flareAsset.offset = offset == null
-                    ? 0.0
-                    : offset is int
-                        ? offset.toDouble()
-                        : offset;
-                dynamic gap = assetMap["gap"];
-                flareAsset.gap = gap == null
-                    ? 0.0
-                    : gap is int
-                        ? gap.toDouble()
-                        : gap;
+            //     dynamic loop = assetMap["loop"];
+            //     flareAsset.loop = loop is bool ? loop : true;
+            //     dynamic offset = assetMap["offset"];
+            //     flareAsset.offset = offset == null
+            //         ? 0.0
+            //         : offset is int
+            //             ? offset.toDouble()
+            //             : offset;
+            //     dynamic gap = assetMap["gap"];
+            //     flareAsset.gap = gap == null
+            //         ? 0.0
+            //         : gap is int
+            //             ? gap.toDouble()
+            //             : gap;
 
-                dynamic bounds = assetMap["bounds"];
-                if (bounds is List) {
-                  /// Override the AABB for this entry with custom values.
-                  flareAsset.setupAABB = flare.AABB.fromValues(
-                      bounds[0] is int ? bounds[0].toDouble() : bounds[0],
-                      bounds[1] is int ? bounds[1].toDouble() : bounds[1],
-                      bounds[2] is int ? bounds[2].toDouble() : bounds[2],
-                      bounds[3] is int ? bounds[3].toDouble() : bounds[3]);
-                }
-              }
-              break;
-            case "nma":
-              TimelineNima nimaAsset = TimelineNima();
-              asset = nimaAsset;
-              nima.FlutterActor actor = _nimaResources[filename];
-              if (actor == null) {
-                actor = nima.FlutterActor();
+            //     dynamic bounds = assetMap["bounds"];
+            //     if (bounds is List) {
+            //       /// Override the AABB for this entry with custom values.
+            //       flareAsset.setupAABB = flare.AABB.fromValues(
+            //           bounds[0] is int ? bounds[0].toDouble() : bounds[0],
+            //           bounds[1] is int ? bounds[1].toDouble() : bounds[1],
+            //           bounds[2] is int ? bounds[2].toDouble() : bounds[2],
+            //           bounds[3] is int ? bounds[3].toDouble() : bounds[3]);
+            //     }
+            //   }
+            //   break;
+            // case "nma":
+            //   TimelineNima nimaAsset = TimelineNima();
+            //   asset = nimaAsset;
+            //   nima.FlutterActor actor = _nimaResources[filename];
+            //   if (actor == null) {
+            //     actor = nima.FlutterActor();
 
-                bool success = await actor.loadFromBundle(filename);
-                if (success) {
-                  _nimaResources[filename] = actor;
-                }
-              }
-              if (actor != null) {
-                nimaAsset.actorStatic = actor;
-                nimaAsset.actor = actor.makeInstance();
+            //     bool success = await actor.loadFromBundle(filename);
+            //     if (success) {
+            //       _nimaResources[filename] = actor;
+            //     }
+            //   }
+            //   if (actor != null) {
+            //     nimaAsset.actorStatic = actor;
+            //     nimaAsset.actor = actor.makeInstance();
 
-                dynamic name = assetMap["idle"];
-                if (name is String) {
-                  nimaAsset.animation = nimaAsset.actor.getAnimation(name);
-                } else {
-                  nimaAsset.animation = actor.animations[0];
-                }
-                nimaAsset.animationTime = 0.0;
-                nimaAsset.actor.advance(0.0);
+            //     dynamic name = assetMap["idle"];
+            //     if (name is String) {
+            //       nimaAsset.animation = nimaAsset.actor.getAnimation(name);
+            //     } else {
+            //       nimaAsset.animation = actor.animations[0];
+            //     }
+            //     nimaAsset.animationTime = 0.0;
+            //     nimaAsset.actor.advance(0.0);
 
-                nimaAsset.setupAABB = nimaAsset.actor.computeAABB();
-                nimaAsset.animation
-                    .apply(nimaAsset.animationTime, nimaAsset.actor, 1.0);
-                nimaAsset.animation.apply(
-                    nimaAsset.animation.duration, nimaAsset.actorStatic, 1.0);
-                nimaAsset.actor.advance(0.0);
-                nimaAsset.actorStatic.advance(0.0);
-                dynamic loop = assetMap["loop"];
-                nimaAsset.loop = loop is bool ? loop : true;
-                dynamic offset = assetMap["offset"];
-                nimaAsset.offset = offset == null
-                    ? 0.0
-                    : offset is int
-                        ? offset.toDouble()
-                        : offset;
-                dynamic gap = assetMap["gap"];
-                nimaAsset.gap = gap == null
-                    ? 0.0
-                    : gap is int
-                        ? gap.toDouble()
-                        : gap;
-                dynamic bounds = assetMap["bounds"];
-                if (bounds is List) {
-                  nimaAsset.setupAABB = nima.AABB.fromValues(
-                      bounds[0] is int ? bounds[0].toDouble() : bounds[0],
-                      bounds[1] is int ? bounds[1].toDouble() : bounds[1],
-                      bounds[2] is int ? bounds[2].toDouble() : bounds[2],
-                      bounds[3] is int ? bounds[3].toDouble() : bounds[3]);
-                }
-              }
-              break;
+            //     nimaAsset.setupAABB = nimaAsset.actor.computeAABB();
+            //     nimaAsset.animation
+            //         .apply(nimaAsset.animationTime, nimaAsset.actor, 1.0);
+            //     nimaAsset.animation.apply(
+            //         nimaAsset.animation.duration, nimaAsset.actorStatic, 1.0);
+            //     nimaAsset.actor.advance(0.0);
+            //     nimaAsset.actorStatic.advance(0.0);
+            //     dynamic loop = assetMap["loop"];
+            //     nimaAsset.loop = loop is bool ? loop : true;
+            //     dynamic offset = assetMap["offset"];
+            //     nimaAsset.offset = offset == null
+            //         ? 0.0
+            //         : offset is int
+            //             ? offset.toDouble()
+            //             : offset;
+            //     dynamic gap = assetMap["gap"];
+            //     nimaAsset.gap = gap == null
+            //         ? 0.0
+            //         : gap is int
+            //             ? gap.toDouble()
+            //             : gap;
+            //     dynamic bounds = assetMap["bounds"];
+            //     if (bounds is List) {
+            //       nimaAsset.setupAABB = nima.AABB.fromValues(
+            //           bounds[0] is int ? bounds[0].toDouble() : bounds[0],
+            //           bounds[1] is int ? bounds[1].toDouble() : bounds[1],
+            //           bounds[2] is int ? bounds[2].toDouble() : bounds[2],
+            //           bounds[3] is int ? bounds[3].toDouble() : bounds[3]);
+            //     }
+            //   }
+            //   break;
 
             default:
 
@@ -1326,66 +1326,66 @@ class Timeline {
 
           _lastAssetY =
               targetAssetY + asset.height * AssetScreenScale + AssetPadding;
-          if (asset is TimelineNima) {
-            _lastAssetY += asset.gap;
-          } else if (asset is TimelineFlare) {
-            _lastAssetY += asset.gap;
-          }
+          // if (asset is TimelineNima) {
+          //   _lastAssetY += asset.gap;
+          // } else if (asset is TimelineFlare) {
+          //   _lastAssetY += asset.gap;
+          // }
           if (asset.y > _height ||
               asset.y + asset.height * AssetScreenScale < 0.0) {
             /// It's not in view: cull it. Make sure we don't advance animations.
-            if (asset is TimelineNima) {
-              TimelineNima nimaAsset = asset;
-              if (!nimaAsset.loop) {
-                nimaAsset.animationTime = -1.0;
-              }
-            } else if (asset is TimelineFlare) {
-              TimelineFlare flareAsset = asset;
-              if (!flareAsset.loop) {
-                flareAsset.animationTime = -1.0;
-              } else if (flareAsset.intro != null) {
-                flareAsset.animationTime = -1.0;
-                flareAsset.animation = flareAsset.intro;
-              }
-            }
+            // if (asset is TimelineNima) {
+            //   TimelineNima nimaAsset = asset;
+            //   if (!nimaAsset.loop) {
+            //     nimaAsset.animationTime = -1.0;
+            //   }
+            // } else if (asset is TimelineFlare) {
+            //   TimelineFlare flareAsset = asset;
+            //   if (!flareAsset.loop) {
+            //     flareAsset.animationTime = -1.0;
+            //   } else if (flareAsset.intro != null) {
+            //     flareAsset.animationTime = -1.0;
+            //     flareAsset.animation = flareAsset.intro;
+            //   }
+            // }
           } else {
             /// Item is in view, apply the new animation time and advance the actor.
-            if (asset is TimelineNima && isActive) {
-              asset.animationTime += elapsed;
-              if (asset.loop) {
-                asset.animationTime %= asset.animation.duration;
-              }
-              asset.animation.apply(asset.animationTime, asset.actor, 1.0);
-              asset.actor.advance(elapsed);
-              stillAnimating = true;
-            } else if (asset is TimelineFlare && isActive) {
-              asset.animationTime += elapsed;
+            // if (asset is TimelineNima && isActive) {
+            //   asset.animationTime += elapsed;
+            //   if (asset.loop) {
+            //     asset.animationTime %= asset.animation.duration;
+            //   }
+            //   asset.animation.apply(asset.animationTime, asset.actor, 1.0);
+            //   asset.actor.advance(elapsed);
+            //   stillAnimating = true;
+            // } else if (asset is TimelineFlare && isActive) {
+            //   asset.animationTime += elapsed;
 
-              /// Flare animations can have idle animations, as well as intro animations.
-              /// Distinguish which one has the top priority and apply it accordingly.
-              if (asset.idleAnimations != null) {
-                double phase = 0.0;
-                for (flare.ActorAnimation animation in asset.idleAnimations) {
-                  animation.apply(
-                      (asset.animationTime + phase) % animation.duration,
-                      asset.actor,
-                      1.0);
-                  phase += 0.16;
-                }
-              } else {
-                if (asset.intro == asset.animation &&
-                    asset.animationTime >= asset.animation.duration) {
-                  asset.animationTime -= asset.animation.duration;
-                  asset.animation = asset.idle;
-                }
-                if (asset.loop && asset.animationTime > 0) {
-                  asset.animationTime %= asset.animation.duration;
-                }
-                asset.animation.apply(asset.animationTime, asset.actor, 1.0);
-              }
-              asset.actor.advance(elapsed);
-              stillAnimating = true;
-            }
+            //   /// Flare animations can have idle animations, as well as intro animations.
+            //   /// Distinguish which one has the top priority and apply it accordingly.
+            //   if (asset.idleAnimations != null) {
+            //     double phase = 0.0;
+            //     for (flare.ActorAnimation animation in asset.idleAnimations) {
+            //       animation.apply(
+            //           (asset.animationTime + phase) % animation.duration,
+            //           asset.actor,
+            //           1.0);
+            //       phase += 0.16;
+            //     }
+            //   } else {
+            //     if (asset.intro == asset.animation &&
+            //         asset.animationTime >= asset.animation.duration) {
+            //       asset.animationTime -= asset.animation.duration;
+            //       asset.animation = asset.idle;
+            //     }
+            //     if (asset.loop && asset.animationTime > 0) {
+            //       asset.animationTime %= asset.animation.duration;
+            //     }
+            //     asset.animation.apply(asset.animationTime, asset.actor, 1.0);
+            //   }
+            //   asset.actor.advance(elapsed);
+            //   stillAnimating = true;
+            // }
 
             /// Add this asset to the list of rendered assets.
             renderAssets.add(item.asset);
